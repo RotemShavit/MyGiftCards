@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/settingsButtonInMenu"
+        android:enabled="true"
+        android:icon="@drawable/settings_button_foreground"
+        app:showAsAction="ifRoom"
+        android:title="" />
+
+    <item
+        android:id="@+id/mapButtonInMenu"
+        android:enabled="true"
+        android:icon="@drawable/location_button_foreground"
+        app:showAsAction="ifRoom"
+        android:title="" />
+
+    <item
+        android:id="@+id/addButtonInMenu"
+        android:enabled="true"
+        android:icon="@drawable/add_new_card_foreground"
+        app:showAsAction="ifRoom"
+        android:title="" />
+
+    <item
+        android:id="@+id/homeButtonInMenu"
+        android:enabled="true"
+        android:icon="@drawable/home_button_foreground"
+        app:showAsAction="ifRoom"
+        android:title="" />
+
+</menu>
