@@ -1,6 +1,7 @@
 package com.postpc.mygiftcrads
 
 import android.content.ClipData
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -28,16 +29,21 @@ class AllGiftCardsActivity : AppCompatActivity() {
 //        val settingsButtonInMenu = findViewById<Button>(R.id.settingsButtonInMenu)
         val addButtonScreen = findViewById<ImageView>(R.id.addNewCard)
 
+        addButtonScreen.setOnClickListener{
+            Log.d(TAG, "new gift card")
+            val myIntent = Intent(this, NewGiftCard::class.java)
+            startActivity(myIntent)
+        }
 
         adapter = RecyclerAdapter(all_gift_cards)
         recyclerview.adapter = adapter
 
-        addButtonScreen.setOnClickListener {
-            val new_card = GiftCard("111", "01.01.2021", 200,
-                "fox", "here", "050000000", "clothes")
-            all_gift_cards.add(new_card)
-            adapter.notifyItemChanged(all_gift_cards.size - 1)
-        }
+//        addButtonScreen.setOnClickListener {
+//            val new_card = GiftCard("111", "01.01.2021", 200,
+//                "fox", "here", "050000000", "clothes")
+//            all_gift_cards.add(new_card)
+//            adapter.notifyItemChanged(all_gift_cards.size - 1)
+//        }
 
         exampleStores()
     }
