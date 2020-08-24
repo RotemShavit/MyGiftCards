@@ -114,7 +114,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65"
+        app:layout_constraintVertical_bias="0.62"
         app:layout_constraintHorizontal_bias="0.15"/>
 
     <EditText
@@ -129,7 +129,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65"
+        app:layout_constraintVertical_bias="0.62"
         app:layout_constraintHorizontal_bias="0.85"/>
 
     <Button
@@ -143,7 +143,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75"/>
+        app:layout_constraintVertical_bias="0.72"/>
 
 
     <View
@@ -154,7 +154,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.8"
+    app:layout_constraintVertical_bias="0.77"
     app:layout_constraintHorizontal_bias="0"/>
     
     <TextView
@@ -166,7 +166,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.81"/>
+        app:layout_constraintVertical_bias="0.78"/>
     
     <View
         android:layout_width="170sp"
@@ -176,7 +176,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintVertical_bias="0.77"
         app:layout_constraintHorizontal_bias="1"/>
 
     <ImageView
@@ -187,6 +187,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95"/>
+        app:layout_constraintVertical_bias="0.9"/>
 
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/allGiftCardsBottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:elevation="8dp"
+        app:itemIconSize="70sp"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:menu="@menu/bottom_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
