@@ -1,15 +1,16 @@
 package com.postpc.mygiftcrads
 
-import android.content.ClipData
+import DeleteDialog
+import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.util.ArrayList
+import com.google.gson.Gson
+import java.util.*
 
 class AllGiftCardsActivity : AppCompatActivity() {
 
@@ -32,11 +33,20 @@ class AllGiftCardsActivity : AppCompatActivity() {
         addButtonScreen.setOnClickListener{
             Log.d(TAG, "new gift card")
             val myIntent = Intent(this, NewGiftCard::class.java)
-            startActivity(myIntent)
+            startActivityForResult(myIntent, 1)
         }
 
         adapter = RecyclerAdapter(all_gift_cards)
         recyclerview.adapter = adapter
+
+        adapter.setOnItemClickListener(object : RecyclerAdapter.OnItemClickListener {
+
+            override fun onLongClick(position: Int): Boolean {
+                Log.d(TAG, "onLongClick in position $position")
+                openDialog(position)
+                return true
+            }
+        })
 
 //        addButtonScreen.setOnClickListener {
 //            val new_card = GiftCard("111", "01.01.2021", 200,
@@ -45,19 +55,51 @@ class AllGiftCardsActivity : AppCompatActivity() {
 //            adapter.notifyItemChanged(all_gift_cards.size - 1)
 //        }
 
-        exampleStores()
+//        exampleStores()
+    }
+
+    fun openDialog(position : Int)
+    {
+        val deleteDialog = DeleteDialog()
+        deleteDialog.setOnDeleteClickListener(object : DeleteDialog.OnDeleteClickListener {
+            override fun onPosClick(){
+                all_gift_cards.removeAt(position)
+                adapter.notifyDataSetChanged()
+            }
+            override fun onNegClick(){
+            }
+        })
+        deleteDialog.show(supportFragmentManager, "delete dialog")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 1)
+        {
+            if(resultCode == Activity.RESULT_OK)
+            {
+                // use the data
+                if (data != null) {
+                    val new_card = Gson().fromJson(data.getStringExtra("new_card"), GiftCard::class.java)
+                    Log.d("Return", "new_card is $new_card")
+                    all_gift_cards.add(new_card)
+                    adapter.notifyItemChanged(all_gift_cards.size - 1)
+                }
+            }
+        }
     }
 
     fun exampleStores()
     {
         all_gift_cards.add(GiftCard("111", "01.08.2020",
-            1500, "ace", "here", "050000000",
+            1500, "ACE", "here", "050000000",
             "clothes"))
         all_gift_cards.add(GiftCard("111", "13.11.2023",
-            250, "fox", "here", "050000000",
+            250, "FOX", "here", "050000000",
             "clothes"))
         all_gift_cards.add(GiftCard("111", "01.01.2021",
-            320, "toysRus", "here", "050000000",
+            320, "TOYSRUS", "here", "050000000",
             "clothes"))
         adapter.notifyItemChanged(all_gift_cards.size - 1)
     }

@@ -30,6 +30,7 @@
         android:hint="Sum"
         android:textSize="20sp"
         android:gravity="center"
+        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +55,7 @@
         android:hint="Serial number"
         android:textSize="20sp"
         android:gravity="center"
+        android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintVertical_bias="0.62"
         app:layout_constraintHorizontal_bias="0.15"/>
 
 
@@ -99,8 +101,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintHorizontal_bias="0.8"/>
+        app:layout_constraintVertical_bias="0.61"
+        app:layout_constraintHorizontal_bias="0.85"/>
 
     <EditText
         android:id="@+id/newPhone"
@@ -109,12 +111,12 @@
         android:hint="Phone"
         android:textSize="20sp"
         android:gravity="center"
-        android:focusable="false"
+        android:inputType="phone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.62"
+        app:layout_constraintVertical_bias="0.5"
         app:layout_constraintHorizontal_bias="0.15"/>
 
     <EditText
@@ -124,15 +126,15 @@
         android:hint="Address"
         android:textSize="20sp"
         android:gravity="center"
-        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.62"
-        app:layout_constraintHorizontal_bias="0.85"/>
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.8"/>
 
     <Button
+        android:id="@+id/done_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="DONE"
