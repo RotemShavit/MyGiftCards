@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "1068927781441",
+    "firebase_url": "https://mygiftcards-c1fe2.firebaseio.com",
+    "project_id": "mygiftcards-c1fe2",
+    "storage_bucket": "mygiftcards-c1fe2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068927781441:android:d6bf6369d939d780d354c0",
+        "android_client_info": {
+          "package_name": "com.example.googlemapsmygiftcard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068927781441-bd2qaiupiitdl94340qamac4aa684brt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0ORAveWcs4p_L-VjXwg_eKKt4InKEmN0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068927781441-bd2qaiupiitdl94340qamac4aa684brt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068927781441:android:494a6bf5bd80497bd354c0",
+        "android_client_info": {
+          "package_name": "com.postpc.mygiftcards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068927781441-bd2qaiupiitdl94340qamac4aa684brt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0ORAveWcs4p_L-VjXwg_eKKt4InKEmN0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068927781441-bd2qaiupiitdl94340qamac4aa684brt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068927781441:android:d3a83c665adb2f4ed354c0",
+        "android_client_info": {
+          "package_name": "com.postpc.mygiftcrads"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068927781441-bd2qaiupiitdl94340qamac4aa684brt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0ORAveWcs4p_L-VjXwg_eKKt4InKEmN0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068927781441-bd2qaiupiitdl94340qamac4aa684brt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

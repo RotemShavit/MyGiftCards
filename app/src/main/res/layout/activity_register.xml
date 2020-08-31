@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".RegisterActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,24 +29,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.25"/>
 
-    <Button
-        android:id="@+id/sign_up_btn"
+    <EditText
+        android:id="@+id/register_mail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SIGN UP"
+        android:hint="email"
+        android:inputType="textEmailAddress"
         android:textSize="30sp"
+        android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.6"/>
 
-    <Button
-        android:id="@+id/google_btn"
+    <EditText
+        android:id="@+id/register_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GOOGLE"
+        android:hint="password"
+        android:inputType="textPassword"
         android:textSize="30sp"
+        android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,14 +58,33 @@
         app:layout_constraintVertical_bias="0.7"/>
 
     <Button
-        android:id="@+id/facebook_btn"
+        android:id="@+id/register_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FACEBOOK"
-        android:textSize="30sp"
+        android:text="REGISTER"
+        android:textSize="20sp"
+        style = "@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:textColor="#5C6BC0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.6"/>
+        app:layout_constraintVertical_bias="0.82"
+        app:layout_constraintHorizontal_bias="0.25"/>
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOG IN"
+        android:textSize="20sp"
+        android:textColor="#5C6BC0"
+        style = "@style/Widget.AppCompat.Button.Borderless.Colored"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.82"
+        app:layout_constraintHorizontal_bias="0.75"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,32 +3,43 @@ package com.postpc.mygiftcrads
 import DeleteDialog
 import android.app.Activity
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.common.primitives.UnsignedBytes.toInt
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.getField
 import com.google.gson.Gson
 import java.util.*
+import java.util.function.LongFunction
+import javax.sql.StatementEvent
+import kotlin.collections.HashMap
 
 class AllGiftCardsActivity : AppCompatActivity() {
 
     private val TAG = "allGiftCardsActivity"
     private var all_gift_cards = ArrayList<GiftCard>()
     private lateinit var adapter : RecyclerAdapter
+    private lateinit var mail : String
+    private lateinit var progress : ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // go to all gift cards of the user
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_gift_cards)
 
         val recyclerview = findViewById<RecyclerView>(R.id.allGiftCardsRecycler)
         recyclerview.layoutManager = LinearLayoutManager(this)
-//        val homeButtonInMenu = findViewById<Button>(R.id.homeButtonInMenu)
-//        val addButtonInMenu = findViewById<Button>(R.id.addButtonInMenu)
-//        val mapButtonInMenu = findViewById<Button>(R.id.mapButtonInMenu)
-//        val settingsButtonInMenu = findViewById<Button>(R.id.settingsButtonInMenu)
+
         val addButtonScreen = findViewById<ImageView>(R.id.addNewCard)
+        progress = findViewById(R.id.progress_bar_all)
 
         addButtonScreen.setOnClickListener{
             Log.d(TAG, "new gift card")
@@ -48,14 +59,10 @@ class AllGiftCardsActivity : AppCompatActivity() {
             }
         })
 
-//        addButtonScreen.setOnClickListener {
-//            val new_card = GiftCard("111", "01.01.2021", 200,
-//                "fox", "here", "050000000", "clothes")
-//            all_gift_cards.add(new_card)
-//            adapter.notifyItemChanged(all_gift_cards.size - 1)
-//        }
+        mail = intent.getStringExtra("mail")
 
-//        exampleStores()
+        loadCards(mail)
+
     }
 
     fun openDialog(position : Int)
@@ -63,6 +70,11 @@ class AllGiftCardsActivity : AppCompatActivity() {
         val deleteDialog = DeleteDialog()
         deleteDialog.setOnDeleteClickListener(object : DeleteDialog.OnDeleteClickListener {
             override fun onPosClick(){
+                val db : FirebaseFirestore = FirebaseFirestore.getInstance()
+                val doc = db.collection("users").document(mail)
+                val hashMap = hashMapOf<String, Any>(all_gift_cards[position].idString to FieldValue.delete())
+                Log.d(TAG, "to delete is ${Gson().toJson(all_gift_cards[position])}")
+                doc.update(hashMap)
                 all_gift_cards.removeAt(position)
                 adapter.notifyDataSetChanged()
             }
@@ -85,22 +97,46 @@ class AllGiftCardsActivity : AppCompatActivity() {
                     Log.d("Return", "new_card is $new_card")
                     all_gift_cards.add(new_card)
                     adapter.notifyItemChanged(all_gift_cards.size - 1)
+                    val db : FirebaseFirestore = FirebaseFirestore.getInstance()
+                    val doc = db.collection("users").document(mail)
+                    doc.get().addOnSuccessListener { document ->
+                        if(document!=null)
+                        {
+                            Log.d(TAG, "i am here")
+                            Log.d(TAG, "amount = ${document.data}")
+                            Log.d(TAG, "amount = ${document["amount"]}")
+                            var amount = document["amount"].toString().toInt()
+                            amount = amount + 1
+                            db.collection("users").document(mail).update("amount"
+                                , amount)
+                            db.collection("users").document(mail).update("card$amount", Gson().toJson(new_card))
+                        }
+                    }
                 }
             }
         }
     }
 
-    fun exampleStores()
+    private fun loadCards(mail : String)
     {
-        all_gift_cards.add(GiftCard("111", "01.08.2020",
-            1500, "ACE", "here", "050000000",
-            "clothes"))
-        all_gift_cards.add(GiftCard("111", "13.11.2023",
-            250, "FOX", "here", "050000000",
-            "clothes"))
-        all_gift_cards.add(GiftCard("111", "01.01.2021",
-            320, "TOYSRUS", "here", "050000000",
-            "clothes"))
-        adapter.notifyItemChanged(all_gift_cards.size - 1)
+        val db : FirebaseFirestore = FirebaseFirestore.getInstance()
+        val doc = db.collection("users").document(mail)
+        doc.get().addOnSuccessListener { document ->
+            if(document!=null)
+            {
+                val amount = document["amount"].toString().toInt()
+                document.data?.forEach {
+                    Log.d(TAG, "key is ${it.key}")
+                    if(it.key != "amount" && it.key != "password") {
+                        val curCardJson = it.value.toString()
+                        Log.d(TAG, "curCardJson is $curCardJson for key ${it.key}")
+                        val curCardObj = Gson().fromJson<GiftCard>(curCardJson, GiftCard::class.java)
+                        all_gift_cards.add(curCardObj)
+                    }
+                }
+                adapter.notifyDataSetChanged()
+                progress.visibility = View.INVISIBLE
+            }
+        }
     }
 }

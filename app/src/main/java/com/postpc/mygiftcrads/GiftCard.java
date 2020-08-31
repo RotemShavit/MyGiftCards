@@ -9,9 +9,10 @@ public class GiftCard
     private String address;
     private String phone;
     private String category;
+    private String idString;
 
     GiftCard(String new_cardNumber, String new_expDate, int new_value, String new_brand,
-             String new_address, String new_phone, String new_category)
+             String new_address, String new_phone, String new_category, String idString)
     {
         this.cardNumber = new_cardNumber;
         this.expDate= new_expDate; // check for valid
@@ -20,6 +21,7 @@ public class GiftCard
         this.address = new_address; // check for valid?
         this.phone = new_phone; // check for valid
         this.category = new_category; // Needs to be from known options - not free text
+        this.idString = idString; // For identify in firebase
     }
 
     String getCardNumber()
@@ -56,4 +58,6 @@ public class GiftCard
     {
         return this.category;
     }
+
+    String getIdString(){return this.idString;}
 }

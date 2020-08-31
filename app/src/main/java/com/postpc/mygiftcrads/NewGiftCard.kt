@@ -5,8 +5,10 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_new_gift_card.*
 import java.util.*
@@ -80,14 +82,26 @@ class NewGiftCard : AppCompatActivity() {
             }
             else
             {
-                val new_card = GiftCard(serial_num.text.toString(), dateEditText.text.toString(),
-                    sum_text.text.toString().toInt(),
-                    Gson().toJson(brandsSpinner.selectedItem).split('"')[3],
-                    address.text.toString(), phone.text.toString(), categorySpinner.selectedItem.toString())
-                val intentBack : Intent = Intent()
-                intentBack.putExtra("new_card", Gson().toJson(new_card))
-                setResult(Activity.RESULT_OK, intentBack)
-                finish()
+                val db : FirebaseFirestore = FirebaseFirestore.getInstance()
+                val sp = PreferenceManager.getDefaultSharedPreferences(this)
+                val mail = sp.getString("mail", "")
+                val doc = db.collection("users").document(mail)
+                doc.get().addOnSuccessListener { document ->
+                    if(document!=null)
+                    {
+                        val amount = document["amount"].toString().toInt()
+                        val card_id = amount + 1
+                        val new_card = GiftCard(serial_num.text.toString(), dateEditText.text.toString(),
+                            sum_text.text.toString().toInt(),
+                            Gson().toJson(brandsSpinner.selectedItem).split('"')[3],
+                            address.text.toString(), phone.text.toString(), categorySpinner.selectedItem.toString()
+                            , "card$card_id")
+                        val intentBack : Intent = Intent()
+                        intentBack.putExtra("new_card", Gson().toJson(new_card))
+                        setResult(Activity.RESULT_OK, intentBack)
+                        finish()
+                    }
+                }
             }
         }
     }
