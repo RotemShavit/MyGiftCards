@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_new_gift_card.*
@@ -26,9 +27,6 @@ class NewGiftCard : AppCompatActivity() {
     lateinit var phone : EditText
     lateinit var address : EditText
 
-
-//    val brands = arrayOf("fox", "ace", "toysRus")
-//    val brands_logos = intArrayOf(R.drawable.ace, R.drawable.fox, R.drawable.toys_r_us)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +101,27 @@ class NewGiftCard : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        val navBtns : BottomNavigationView = findViewById(R.id.addCardBottomMenu)
+
+        navBtns.setOnNavigationItemSelectedListener { item ->
+            if(item.itemId == R.id.homeButtonInMenu)
+            {
+                val myIntent = Intent(this, AllGiftCardsActivity::class.java)
+                val sp = PreferenceManager.getDefaultSharedPreferences(this)
+                val mail = sp.getString("mail", "")
+                myIntent.putExtra("mail", mail)
+                startActivityForResult(myIntent, 1)
+                finish()
+            }
+            if(item.itemId == R.id.settingsButtonInMenu)
+            {
+                val myIntent = Intent(this, SettingsActivity::class.java)
+                startActivityForResult(myIntent, 1)
+                finish()
+            }
+            true
         }
     }
 }

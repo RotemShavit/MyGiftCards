@@ -5,13 +5,20 @@ import android.app.Activity
 import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationMenu
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.common.primitives.UnsignedBytes.toInt
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -35,6 +42,27 @@ class AllGiftCardsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_gift_cards)
 
+        val navBtns : BottomNavigationView = findViewById(R.id.allGiftCardsBottomMenu)
+
+        navBtns.setOnNavigationItemSelectedListener { item ->
+            if(item.itemId == R.id.addButtonInMenu)
+            {
+                val myIntent = Intent(this, NewGiftCard::class.java)
+                startActivityForResult(myIntent, 1)
+            }
+            if(item.itemId == R.id.settingsButtonInMenu)
+            {
+                val myIntent = Intent(this, SettingsActivity::class.java)
+                startActivityForResult(myIntent, 1)
+            }
+            if(item.itemId == R.id.mapButtonInMenu)
+            {
+                val myIntent = Intent(this, MapActivity::class.java)
+                startActivityForResult(myIntent, 1)
+            }
+            true
+        }
+
         val recyclerview = findViewById<RecyclerView>(R.id.allGiftCardsRecycler)
         recyclerview.layoutManager = LinearLayoutManager(this)
 
@@ -42,6 +70,7 @@ class AllGiftCardsActivity : AppCompatActivity() {
         progress = findViewById(R.id.progress_bar_all)
 
         addButtonScreen.setOnClickListener{
+            NotificationClass(this).fireDateNotification("Your Card is about to be expired")
             Log.d(TAG, "new gift card")
             val myIntent = Intent(this, NewGiftCard::class.java)
             startActivityForResult(myIntent, 1)

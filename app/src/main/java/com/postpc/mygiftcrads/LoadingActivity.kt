@@ -19,6 +19,7 @@ class LoadingActivity : AppCompatActivity() {
         {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+            finish()
         }
         else
         {
@@ -32,17 +33,20 @@ class LoadingActivity : AppCompatActivity() {
                         val intent = Intent(this, AllGiftCardsActivity::class.java)
                         intent.putExtra("mail", sp_mail)
                         startActivity(intent)
+                        finish()
                     }
                     else
                     {
                         val intent = Intent(this, RegisterActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }
                 }
                 else
                 {
                     val intent = Intent(this, RegisterActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.postpc.mygiftcrads
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -46,6 +47,7 @@ class RegisterActivity : AppCompatActivity() {
                 val intent = Intent(this, AllGiftCardsActivity::class.java)
                 intent.putExtra("mail", mail)
                 startActivity(intent)
+                finish()
                 // Next activity
             } else {
                 Toast.makeText(this, "Please insert valid values", Toast.LENGTH_LONG).show()
@@ -58,20 +60,27 @@ class RegisterActivity : AppCompatActivity() {
             val log_password = register_password.text.toString()
             if (log_mail != "" && log_password != "") {
                 val doc = db.collection("users").document(log_mail)
+                Log.d("*****", "doc: $doc")
                 doc.get().addOnSuccessListener { document ->
                     if (document != null) {
                         if (document["password"] == log_password) {
-                            // get all data of user
-                            // go to all gift cards of the user
+                            val sp = PreferenceManager.getDefaultSharedPreferences(this)
+                            val editor  = sp.edit()
+                            editor.putString("mail", log_mail)
+                            editor.putString("password", log_password)
+                            editor.apply()
                             val intent = Intent(this, AllGiftCardsActivity::class.java)
                             intent.putExtra("mail", log_mail)
                             startActivity(intent)
+                            finish()
                         } else {
                             Toast.makeText(this, "Wrong password or email", Toast.LENGTH_LONG).show()
                         }
                     } else {
                         Toast.makeText(this, "There is not such user, Please sign up", Toast.LENGTH_LONG).show()
                     }
+                }.addOnFailureListener {
+                    Log.d("****", "failed")
                 }
 
             }

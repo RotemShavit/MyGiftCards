@@ -61,7 +61,7 @@
         android:id="@+id/register_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="REGISTER"
+        android:text="SIGN UP"
         android:textSize="20sp"
         style = "@style/Widget.AppCompat.Button.Borderless.Colored"
         android:textColor="#5C6BC0"
