@@ -121,6 +121,12 @@ class NewGiftCard : AppCompatActivity() {
                 startActivityForResult(myIntent, 1)
                 finish()
             }
+            if(item.itemId == R.id.mapButtonInMenu)
+            {
+                val myIntent = Intent(this, MapActivity::class.java)
+                startActivityForResult(myIntent, 1)
+                finish()
+            }
             true
         }
     }
