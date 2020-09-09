@@ -33,22 +33,32 @@ class RegisterActivity : AppCompatActivity() {
             val mail = register_email.text.toString()
             val password = register_password.text.toString()
             if (mail != "" && password != "") {
-                val hashMap: HashMap<String, Any> = HashMap<String, Any>()
-                hashMap["password"] = password
-                hashMap["amount"] = 0
-                db.collection("users").document(mail).set(hashMap)
-                val sp = PreferenceManager.getDefaultSharedPreferences(this)
-                val editor = sp.edit()
-                editor.putString("mail", mail)
-                editor.putString("password", password)
-                editor.apply()
-                register_email.setText("")
-                register_password.setText("")
-                val intent = Intent(this, AllGiftCardsActivity::class.java)
-                intent.putExtra("mail", mail)
-                startActivity(intent)
-                finish()
-                // Next activity
+                val doc = db.collection("users").document(mail)
+                doc.get().addOnSuccessListener {document ->
+                    if(!document.exists())
+                    {
+                        val hashMap: HashMap<String, Any> = HashMap<String, Any>()
+                        hashMap["password"] = password
+                        hashMap["amount"] = 0
+                        db.collection("users").document(mail).set(hashMap)
+                        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+                        val editor = sp.edit()
+                        editor.putString("mail", mail)
+                        editor.putString("password", password)
+                        editor.apply()
+                        register_email.setText("")
+                        register_password.setText("")
+                        val intent = Intent(this, AllGiftCardsActivity::class.java)
+                        intent.putExtra("mail", mail)
+                        startActivity(intent)
+                        finish()
+                        // Next activity
+                    }
+                    else
+                    {
+                        Toast.makeText(this, "This user already exists", Toast.LENGTH_LONG).show()
+                    }
+                }
             } else {
                 Toast.makeText(this, "Please insert valid values", Toast.LENGTH_LONG).show()
             }

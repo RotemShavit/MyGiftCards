@@ -2,6 +2,7 @@ package com.postpc.mygiftcrads;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.text.Collator;
 import android.location.Address;
@@ -23,6 +24,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.postpc.mygiftcrads.MyClusterManagerRenderer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -42,6 +47,7 @@ import com.google.maps.android.clustering.ClusterManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -82,7 +88,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     }
 
     //@RequiresApi(api = Build.VERSION_CODES.N)
-    private void addMapMarkers(){
+    private void addMapMarker(LatLng latlng, String title, String snippet, int logo){
         if(mMap != null){
             if(mClusterManager == null){
                 mClusterManager = new ClusterManager<ClusterMarker>(this.getApplicationContext(), mMap);
@@ -95,18 +101,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                 );
                 mClusterManager.setRenderer(mClusterManagerRenderer);
             }
-            LatLng latlng =  new LatLng(32.085300, 34.781769);
             // Log.d(TAG, "addMapMarkers: location: " + userLocation.getGeo_point().toString());
             try{
-                String title = "blaBla";
-                String snippet = "";
-                snippet = "This is you";
-                int avatar = R.drawable.amu_bubble_mask; // set the default avatar
                 ClusterMarker newClusterMarker = new ClusterMarker(
                         latlng,
                         //userLocation.getUser().getUsername(),
                         snippet, title,
-                        avatar
+                        logo
                         //userLocation.getUser()
                 );
                 mClusterManager.addItem(newClusterMarker);
@@ -118,7 +119,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
             mClusterManager.cluster();
 //            moveCamera(latlng, 15, "kaka");
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,15));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,15));
         }
 
     }
@@ -202,8 +203,47 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             }
         });
         HideSoftKeyboard();
+        addStoresMarkers();
+    }
 
-        addMapMarkers();
+    private void addStoresMarkers()
+    {
+        Intent intent = getIntent();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String stores = intent.getStringExtra("stores");
+        String[] storesArray = stores.split(";");
+        for (final String curStore : storesArray) {
+            db.collection("locations").document(curStore).
+                    get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists())
+                    {
+                        Map<String, Object> map = document.getData();
+                        if(map != null)
+                        {
+                            for(Map.Entry<String, Object> entry : map.entrySet())
+                            {
+                                int logo = -1;
+                                if(curStore.equals("ace"))
+                                {
+                                    logo = R.mipmap.ace_marker_logo;
+                                }
+                                else if(curStore.equals("fox"))
+                                {
+                                    logo = R.drawable.fox_marker_logo;
+                                }
+                                GeoPoint curgeo = (GeoPoint) entry.getValue();
+                                addMapMarker(new LatLng(curgeo.getLatitude(), curgeo.getLongitude())
+                                        , curStore, "100", logo);
+                            }
+                        }
+                    }
+                }
+            });
+
+        }
     }
 
     private void geolocate(){

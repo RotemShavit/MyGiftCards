@@ -8,11 +8,9 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,13 +32,17 @@ class AllGiftCardsActivity : AppCompatActivity() {
     private val TAG = "allGiftCardsActivity"
     private var all_gift_cards = ArrayList<GiftCard>()
     private lateinit var adapter : RecyclerAdapter
+    private lateinit var recyclerview : RecyclerView
     private lateinit var mail : String
     private lateinit var progress : ProgressBar
+    private lateinit var searchField : SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // go to all gift cards of the user
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_gift_cards)
+
+        searchField = findViewById(R.id.allGiftCardsSearch)
 
         val navBtns : BottomNavigationView = findViewById(R.id.allGiftCardsBottomMenu)
 
@@ -54,16 +56,19 @@ class AllGiftCardsActivity : AppCompatActivity() {
             {
                 val myIntent = Intent(this, SettingsActivity::class.java)
                 startActivityForResult(myIntent, 1)
+                finish()
             }
             if(item.itemId == R.id.mapButtonInMenu)
             {
                 val myIntent = Intent(this, MapActivity::class.java)
+                val stores = allStores()
+                myIntent.putExtra("stores", stores)
                 startActivityForResult(myIntent, 1)
             }
             true
         }
 
-        val recyclerview = findViewById<RecyclerView>(R.id.allGiftCardsRecycler)
+        recyclerview = findViewById<RecyclerView>(R.id.allGiftCardsRecycler)
         recyclerview.layoutManager = LinearLayoutManager(this)
 
         val addButtonScreen = findViewById<ImageView>(R.id.addNewCard)
@@ -86,13 +91,67 @@ class AllGiftCardsActivity : AppCompatActivity() {
                 openDialog(position)
                 return true
             }
+
+            override fun onLocationClick(position: Int) {
+                val myIntent = Intent(this@AllGiftCardsActivity, MapActivity::class.java)
+                myIntent.putExtra("stores", all_gift_cards[position].brand.toString().toLowerCase())
+                startActivityForResult(myIntent, 1)
+            }
         })
+
+        searchField.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    search_fo_cards(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
+        searchField.setOnCloseListener {
+            adapter = RecyclerAdapter(all_gift_cards)
+            recyclerview.adapter = adapter
+            adapter.setOnItemClickListener(object : RecyclerAdapter.OnItemClickListener {
+
+                override fun onLongClick(position: Int): Boolean {
+                    Log.d(TAG, "onLongClick in position $position")
+                    openDialog(position)
+                    return true
+                }
+
+                override fun onLocationClick(position: Int) {
+                    val myIntent = Intent(this@AllGiftCardsActivity, MapActivity::class.java)
+                    myIntent.putExtra("stores", all_gift_cards[position].brand.toString().toLowerCase())
+                    startActivityForResult(myIntent, 1)
+                }
+            })
+            return@setOnCloseListener false
+        }
 
         mail = intent.getStringExtra("mail")
 
         loadCards(mail)
 
     }
+
+    private fun allStores() : String
+    {
+        var stores = ""
+        for(card in all_gift_cards)
+        {
+            val curBrand = card.brand.toString().toLowerCase()
+            if(curBrand !in stores)
+            {
+                stores = "$stores$curBrand;"
+            }
+        }
+        return stores.dropLast(1)
+    }
+
 
     fun openDialog(position : Int)
     {
@@ -167,5 +226,35 @@ class AllGiftCardsActivity : AppCompatActivity() {
                 progress.visibility = View.INVISIBLE
             }
         }
+    }
+
+    fun search_fo_cards(brand: String)
+    {
+        Log.d("*****", "brand is $brand")
+        val curCards = ArrayList<GiftCard>()
+        for(card in all_gift_cards)
+        {
+            Log.d("*****", "card is ${card.brand}")
+            if(card.brand.toString().toLowerCase(Locale.ROOT) == brand.toLowerCase(Locale.ROOT)) {
+                curCards.add(card)
+            }
+        }
+        Log.d("*****", "List is ${curCards.size}")
+        adapter = RecyclerAdapter(curCards)
+        recyclerview.adapter = adapter
+        adapter.setOnItemClickListener(object : RecyclerAdapter.OnItemClickListener {
+
+            override fun onLongClick(position: Int): Boolean {
+                Log.d(TAG, "onLongClick in position $position")
+                openDialog(position)
+                return true
+            }
+
+            override fun onLocationClick(position: Int) {
+                val myIntent = Intent(this@AllGiftCardsActivity, MapActivity::class.java)
+                myIntent.putExtra("stores", all_gift_cards[position].brand.toString().toLowerCase())
+                startActivityForResult(myIntent, 1)
+            }
+        })
     }
 }

@@ -1,10 +1,12 @@
 package com.postpc.mygiftcrads
 
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerAdapter(private val cards: ArrayList<GiftCard>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>()
@@ -14,6 +16,7 @@ class RecyclerAdapter(private val cards: ArrayList<GiftCard>) : RecyclerView.Ada
 
     interface OnItemClickListener{
         fun onLongClick(position: Int): Boolean
+        fun onLocationClick(position: Int)
     }
 
     fun setOnItemClickListener(listener : OnItemClickListener)
@@ -61,9 +64,13 @@ class RecyclerAdapter(private val cards: ArrayList<GiftCard>) : RecyclerView.Ada
         val brandImage = view.findViewById<ImageView>(R.id.brandImageRecycler)
         val expDate = view.findViewById<TextView>(R.id.expDateRecycler)
         val sum = view.findViewById<TextView>(R.id.sumRecycler)
+        val locationBtn = view.findViewById<ImageView>(R.id.locationRecycler)
 
         init
         {
+            locationBtn.setOnClickListener {
+                listen.onLocationClick(adapterPosition)
+            }
             v.setOnClickListener(this)
             v.setOnLongClickListener(this)
         }

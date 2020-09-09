@@ -4,9 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.FirebaseFirestore
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -60,6 +63,17 @@ class SettingsActivity : AppCompatActivity() {
                 startActivityForResult(myIntent, 1)
             }
             true
+        }
+
+        val deleteUserBtn = findViewById<TextView>(R.id.delete_user_btn)
+
+        deleteUserBtn.setOnClickListener {
+            val db : FirebaseFirestore = FirebaseFirestore.getInstance()
+            val mail = sp.getString("mail", null)
+            db.collection("users").document(mail).delete()
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }
