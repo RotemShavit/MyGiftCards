@@ -49,6 +49,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Integer.parseInt;
+
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MapsActivity";
@@ -211,38 +213,46 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         Intent intent = getIntent();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String stores = intent.getStringExtra("stores");
+        String sums = intent.getStringExtra("sums");
         String[] storesArray = stores.split(";");
-        for (final String curStore : storesArray) {
-            db.collection("locations").document(curStore).
-                    get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    DocumentSnapshot document = task.getResult();
-                    if(document.exists())
-                    {
-                        Map<String, Object> map = document.getData();
-                        if(map != null)
+        final String[] sumsArray = sums.split(";");
+        if(!storesArray[0].equals(""))
+        {
+            int i = 0;
+            for (final String curStore : storesArray)
+            {
+                final int finalI = i;
+                db.collection("locations").document(curStore).
+                        get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot document = task.getResult();
+                        if(document.exists())
                         {
-                            for(Map.Entry<String, Object> entry : map.entrySet())
+                            Map<String, Object> map = document.getData();
+                            if(map != null)
                             {
-                                int logo = -1;
-                                if(curStore.equals("ace"))
+                                for(Map.Entry<String, Object> entry : map.entrySet())
                                 {
-                                    logo = R.mipmap.ace_marker_logo;
+                                    int logo = -1;
+                                    if(curStore.equals("ace"))
+                                    {
+                                        logo = R.mipmap.ace_marker_logo;
+                                    }
+                                    else if(curStore.equals("fox"))
+                                    {
+                                        logo = R.drawable.fox_marker_logo;
+                                    }
+                                    GeoPoint curgeo = (GeoPoint) entry.getValue();
+                                    addMapMarker(new LatLng(curgeo.getLatitude(), curgeo.getLongitude())
+                                            , curStore.toUpperCase(),sumsArray[finalI] + " NIS", logo);
                                 }
-                                else if(curStore.equals("fox"))
-                                {
-                                    logo = R.drawable.fox_marker_logo;
-                                }
-                                GeoPoint curgeo = (GeoPoint) entry.getValue();
-                                addMapMarker(new LatLng(curgeo.getLatitude(), curgeo.getLongitude())
-                                        , curStore, "100", logo);
                             }
                         }
                     }
-                }
-            });
-
+                });
+                i ++;
+            }
         }
     }
 

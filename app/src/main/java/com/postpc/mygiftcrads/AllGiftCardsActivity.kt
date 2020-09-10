@@ -62,7 +62,9 @@ class AllGiftCardsActivity : AppCompatActivity() {
             {
                 val myIntent = Intent(this, MapActivity::class.java)
                 val stores = allStores()
+                val sums = sumStores(stores)
                 myIntent.putExtra("stores", stores)
+                myIntent.putExtra("sums", sums)
                 startActivityForResult(myIntent, 1)
             }
             true
@@ -93,8 +95,10 @@ class AllGiftCardsActivity : AppCompatActivity() {
             }
 
             override fun onLocationClick(position: Int) {
+                val curStore = all_gift_cards[position].brand.toString()
                 val myIntent = Intent(this@AllGiftCardsActivity, MapActivity::class.java)
-                myIntent.putExtra("stores", all_gift_cards[position].brand.toString().toLowerCase())
+                myIntent.putExtra("stores", curStore.toLowerCase())
+                myIntent.putExtra("sums", sumStores(curStore))
                 startActivityForResult(myIntent, 1)
             }
         })
@@ -124,8 +128,10 @@ class AllGiftCardsActivity : AppCompatActivity() {
                 }
 
                 override fun onLocationClick(position: Int) {
+                    val curStore = all_gift_cards[position].brand.toString()
                     val myIntent = Intent(this@AllGiftCardsActivity, MapActivity::class.java)
-                    myIntent.putExtra("stores", all_gift_cards[position].brand.toString().toLowerCase())
+                    myIntent.putExtra("stores", curStore.toLowerCase())
+                    myIntent.putExtra("sums", sumStores(curStore))
                     startActivityForResult(myIntent, 1)
                 }
             })
@@ -138,6 +144,31 @@ class AllGiftCardsActivity : AppCompatActivity() {
 
     }
 
+
+    private fun sumStores(stores: String) : String
+    {
+        var sums = ""
+        val storesArray = stores.split(";")
+        Log.d("*****", "storesArray is $storesArray")
+        Log.d("*****", "stores is $stores")
+        if(!stores.equals(""))
+        {
+            for(store in storesArray)
+            {
+                var curSum = 0
+                for(card in all_gift_cards)
+                {
+                    if(card.brand.toString().toLowerCase() == store.toLowerCase())
+                    {
+                        curSum += card.value
+                    }
+                }
+                sums = "$sums$curSum;"
+            }
+        }
+        return sums
+    }
+
     private fun allStores() : String
     {
         var stores = ""
@@ -148,6 +179,10 @@ class AllGiftCardsActivity : AppCompatActivity() {
             {
                 stores = "$stores$curBrand;"
             }
+        }
+        if(stores == "")
+        {
+            return stores
         }
         return stores.dropLast(1)
     }
@@ -251,8 +286,10 @@ class AllGiftCardsActivity : AppCompatActivity() {
             }
 
             override fun onLocationClick(position: Int) {
+                val curStore = all_gift_cards[position].brand.toString()
                 val myIntent = Intent(this@AllGiftCardsActivity, MapActivity::class.java)
-                myIntent.putExtra("stores", all_gift_cards[position].brand.toString().toLowerCase())
+                myIntent.putExtra("stores", curStore.toString().toLowerCase())
+                myIntent.putExtra("sums", sumStores(curStore))
                 startActivityForResult(myIntent, 1)
             }
         })
