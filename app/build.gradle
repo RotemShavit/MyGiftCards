@@ -27,9 +27,9 @@ android {
 }
 
 configurations {
-   // implementation.exclude module:'proto-google-common-protos'
+    // implementation.exclude module:'proto-google-common-protos'
     //implementation.exclude module:'protolite-well-known-types'
-    implementation.exclude module:'protobuf-lite'
+    implementation.exclude module: 'protobuf-lite'
 }
 
 dependencies {
@@ -50,4 +50,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.libraries.places:places:2.3.0'
     implementation 'com.google.maps.android:android-maps-utils:2.0.3'
+
+
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
+
 }

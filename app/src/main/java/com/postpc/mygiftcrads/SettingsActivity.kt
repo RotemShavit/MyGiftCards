@@ -22,9 +22,9 @@ class SettingsActivity : AppCompatActivity() {
         val mailView = findViewById<TextView>(R.id.settingsMailView)
         mailView.text = sp.getString("mail","")
 
-        val changePasseordBtn = findViewById<TextView>(R.id.change_password_btn)
+        val changePasswordBtn = findViewById<TextView>(R.id.change_password_btn)
 
-        changePasseordBtn.setOnClickListener {
+        changePasswordBtn.setOnClickListener {
             val intent = Intent(this, ChangePasswordActivity::class.java)
             startActivity(intent)
         }

@@ -237,11 +237,19 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                     int logo = -1;
                                     if(curStore.equals("ace"))
                                     {
-                                        logo = R.mipmap.ace_marker_logo;
+                                        logo = R.mipmap.ace_litlle_logo;
                                     }
                                     else if(curStore.equals("fox"))
                                     {
                                         logo = R.drawable.fox_marker_logo;
+                                    }
+                                    else if(curStore.equals("rami levy"))
+                                    {
+                                        logo = R.mipmap.rami_map_logo;
+                                    }
+                                    else if(curStore.equals("bug"))
+                                    {
+                                        logo = R.mipmap.bug_map_logo;
                                     }
                                     GeoPoint curgeo = (GeoPoint) entry.getValue();
                                     addMapMarker(new LatLng(curgeo.getLatitude(), curgeo.getLongitude())

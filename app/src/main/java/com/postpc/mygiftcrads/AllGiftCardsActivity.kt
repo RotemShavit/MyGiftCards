@@ -1,7 +1,11 @@
 package com.postpc.mygiftcrads
 
 import DeleteDialog
+import ReminderBroadcast
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
@@ -56,7 +60,6 @@ class AllGiftCardsActivity : AppCompatActivity() {
             {
                 val myIntent = Intent(this, SettingsActivity::class.java)
                 startActivityForResult(myIntent, 1)
-                finish()
             }
             if(item.itemId == R.id.mapButtonInMenu)
             {
@@ -77,7 +80,8 @@ class AllGiftCardsActivity : AppCompatActivity() {
         progress = findViewById(R.id.progress_bar_all)
 
         addButtonScreen.setOnClickListener{
-            NotificationClass(this).fireDateNotification("Your Card is about to be expired")
+//            NotificationClass(this).fireDateNotification("Your Card is about to be expired")
+            delayNotify(10)
             Log.d(TAG, "new gift card")
             val myIntent = Intent(this, NewGiftCard::class.java)
             startActivityForResult(myIntent, 1)
@@ -142,6 +146,17 @@ class AllGiftCardsActivity : AppCompatActivity() {
 
         loadCards(mail)
 
+    }
+
+
+    private fun delayNotify(delay: Long)
+    {
+        val intent: Intent = Intent(this, ReminderBroadcast::class.java)
+        val pending: PendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+        val alarmManager: AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val currentTimeInMilli : Long = System.currentTimeMillis()
+        val tenSecondsInMilli: Long = 10*1000
+        alarmManager.set(AlarmManager.RTC_WAKEUP, currentTimeInMilli + tenSecondsInMilli, pending)
     }
 
 

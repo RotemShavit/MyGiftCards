@@ -18,6 +18,7 @@ class NotificationClass(private val context: Context) {
     {
         createDateChannelIfNotExists()
         createNotification(msg)
+//        createDelayedNotification(msg, delay)
     }
 
     private fun createDateChannelIfNotExists()
@@ -57,5 +58,10 @@ class NotificationClass(private val context: Context) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         notificationManager.notify(1, notification)
+    }
+
+    fun createDelayedNotification(msg: String, delay: Long)
+    {
+
     }
 }

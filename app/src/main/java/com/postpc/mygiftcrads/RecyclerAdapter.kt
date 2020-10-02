@@ -50,6 +50,14 @@ class RecyclerAdapter(private val cards: ArrayList<GiftCard>) : RecyclerView.Ada
         {
             holder.brandImage.setImageResource(R.drawable.toys_r_us)
         }
+        else if(card.brand == "RAMI LEVY")
+        {
+            holder.brandImage.setImageResource(R.drawable.rami_levy)
+        }
+        else if(card.brand == "BUG")
+        {
+            holder.brandImage.setImageResource(R.drawable.bug)
+        }
         holder.expDate.text = card.expDate
         holder.sum.text = card.value.toString()
         // set image, sum, expDate etc

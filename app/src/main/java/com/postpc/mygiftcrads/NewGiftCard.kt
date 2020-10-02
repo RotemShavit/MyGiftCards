@@ -26,6 +26,7 @@ class NewGiftCard : AppCompatActivity() {
     lateinit var serial_num : EditText
     lateinit var phone : EditText
     lateinit var address : EditText
+    lateinit var scanBtn : ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +41,14 @@ class NewGiftCard : AppCompatActivity() {
         serial_num = findViewById(R.id.newSerial)
         phone = findViewById(R.id.newPhone)
         address = findViewById(R.id.newAddress)
+        scanBtn = findViewById(R.id.scanBtn)
 
         val brandSpinnerData = ArrayList<SpinnerData>()
         brandSpinnerData.add(SpinnerData("FOX", R.drawable.fox.toString()))
         brandSpinnerData.add(SpinnerData("ACE", R.drawable.ace.toString()))
         brandSpinnerData.add(SpinnerData("TOYSRUS", R.drawable.toys_r_us.toString()))
+        brandSpinnerData.add(SpinnerData("RAMI LEVY", R.drawable.rami_levy.toString()))
+        brandSpinnerData.add(SpinnerData("BUG", R.drawable.bug.toString()))
 
         val categorySpinnerData = ArrayList<String>()
         categorySpinnerData.add("Clothes")
@@ -128,6 +132,11 @@ class NewGiftCard : AppCompatActivity() {
                 finish()
             }
             true
+        }
+
+        scanBtn.setOnClickListener {
+            val intent = Intent(this, ScanCard::class.java)
+            startActivity(intent)
         }
     }
 }
