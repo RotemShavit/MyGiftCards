@@ -7,6 +7,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.opengl.Visibility
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -15,6 +16,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,6 +47,7 @@ class AllGiftCardsActivity : AppCompatActivity() {
         // go to all gift cards of the user
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_gift_cards)
+
 
         searchField = findViewById(R.id.allGiftCardsSearch)
 
@@ -263,9 +266,10 @@ class AllGiftCardsActivity : AppCompatActivity() {
             if(document!=null)
             {
                 val amount = document["amount"].toString().toInt()
+                doc.update("token", PreferenceManager.getDefaultSharedPreferences(this).getString("token", ""))
                 document.data?.forEach {
                     Log.d(TAG, "key is ${it.key}")
-                    if(it.key != "amount" && it.key != "password") {
+                    if(it.key != "amount" && it.key != "password" && it.key != "token") {
                         val curCardJson = it.value.toString()
                         Log.d(TAG, "curCardJson is $curCardJson for key ${it.key}")
                         val curCardObj = Gson().fromJson<GiftCard>(curCardJson, GiftCard::class.java)

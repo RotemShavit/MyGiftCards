@@ -21,7 +21,7 @@
         android:id="@+id/card_icon"
         android:layout_width="250sp"
         android:layout_height="250sp"
-        android:src="@drawable/giftcardicon"
+        android:src="@drawable/icon"
         android:rotation="12"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"

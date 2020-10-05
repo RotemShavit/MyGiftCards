@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -40,11 +41,14 @@ class RegisterActivity : AppCompatActivity() {
                         val hashMap: HashMap<String, Any> = HashMap<String, Any>()
                         hashMap["password"] = password
                         hashMap["amount"] = 0
+                        saveFirstTimeToken()
+                        hashMap["token"] = ""
                         db.collection("users").document(mail).set(hashMap)
                         val sp = PreferenceManager.getDefaultSharedPreferences(this)
                         val editor = sp.edit()
                         editor.putString("mail", mail)
                         editor.putString("password", password)
+                        editor.putString("token", "")
                         editor.apply()
                         register_email.setText("")
                         register_password.setText("")
@@ -96,4 +100,17 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun saveFirstTimeToken()
+    {
+        var token : String = ""
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+            token = it.token
+            val sp = PreferenceManager.getDefaultSharedPreferences(this)
+            val editor = sp.edit()
+            editor.putString("token", token)
+            editor.apply()
+        }
+    }
+
 }
