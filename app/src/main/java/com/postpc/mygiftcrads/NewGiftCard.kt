@@ -98,8 +98,10 @@ class NewGiftCard : AppCompatActivity() {
                             Gson().toJson(brandsSpinner.selectedItem).split('"')[3],
                             address.text.toString(), phone.text.toString(), categorySpinner.selectedItem.toString()
                             , "card$card_id")
+                        val new_notification = Notification(dateEditText.text.toString(), "card$card_id")
                         val intentBack : Intent = Intent()
                         intentBack.putExtra("new_card", Gson().toJson(new_card))
+                        intentBack.putExtra("new_notification", Gson().toJson(new_notification))
                         setResult(Activity.RESULT_OK, intentBack)
                         finish()
                     }

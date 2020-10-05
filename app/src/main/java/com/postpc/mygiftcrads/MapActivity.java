@@ -237,7 +237,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                                     int logo = -1;
                                     if(curStore.equals("ace"))
                                     {
-                                        logo = R.mipmap.ace_litlle_logo;
+                                        logo = R.mipmap.ace_marker_logo;
                                     }
                                     else if(curStore.equals("fox"))
                                     {

@@ -252,6 +252,18 @@ class AllGiftCardsActivity : AppCompatActivity() {
                                 , amount)
                             db.collection("users").document(mail).update("card$amount", Gson().toJson(new_card))
                         }
+                        val new_notification = Gson().fromJson(data.
+                            getStringExtra("new_notification"), Notification::class.java)
+                        val notDoc = db.collection("notifications").document(new_notification.serial)
+                        notDoc.get().addOnSuccessListener {
+                            if(it != null)
+                            {
+                                val hashMap: HashMap<String, Any> = HashMap<String, Any>()
+                                hashMap["date"] = new_notification.date
+                                db.collection("notifications").
+                                    document(new_notification.serial).set(hashMap)
+                            }
+                        }
                     }
                 }
             }
