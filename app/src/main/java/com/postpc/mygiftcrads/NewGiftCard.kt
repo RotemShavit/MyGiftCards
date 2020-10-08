@@ -69,7 +69,11 @@ class NewGiftCard : AppCompatActivity() {
             val myYear = cldr.get(Calendar.YEAR)
 
             picker = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                val pickedDate = dayOfMonth.toString() + "/" + (month + 1) + "/" + year
+                var pickedDate = dayOfMonth.toString() + "/" + (month + 1) + "/" + year
+                if(dayOfMonth < 10)
+                {
+                    pickedDate = "0$pickedDate"
+                }
                 dateEditText.setText(pickedDate)
             }, myYear, myMonth, myDay)
 
@@ -98,7 +102,8 @@ class NewGiftCard : AppCompatActivity() {
                             Gson().toJson(brandsSpinner.selectedItem).split('"')[3],
                             address.text.toString(), phone.text.toString(), categorySpinner.selectedItem.toString()
                             , "card$card_id")
-                        val new_notification = Notification(dateEditText.text.toString(), "card$card_id")
+                        val new_notification = Notification(dateEditText.text.toString(), "card$card_id",
+                            Gson().toJson(brandsSpinner.selectedItem).split('"')[3])
                         val intentBack : Intent = Intent()
                         intentBack.putExtra("new_card", Gson().toJson(new_card))
                         intentBack.putExtra("new_notification", Gson().toJson(new_notification))
@@ -130,6 +135,11 @@ class NewGiftCard : AppCompatActivity() {
             if(item.itemId == R.id.mapButtonInMenu)
             {
                 val myIntent = Intent(this, MapActivity::class.java)
+                val sp = PreferenceManager.getDefaultSharedPreferences(this)
+                val stores = sp.getString("stores", "")
+                val sums = sp.getString("sums", "")
+                myIntent.putExtra("stores", stores)
+                myIntent.putExtra("sums", sums)
                 startActivityForResult(myIntent, 1)
                 finish()
             }

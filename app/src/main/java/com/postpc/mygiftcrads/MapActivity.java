@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -137,8 +138,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         if(task.isSuccessful()){
                             Log.d(TAG, "onComplete: found location!");
                             Location currentLocation = (Location) task.getResult();
-                            //Log.d(TAG, "onComplete: currrent location long,lat:" + currentLocation.getLongitude() + currentLocation.getLatitude());
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My Location");
+                            if(String.valueOf(currentLocation).equals("null"))
+                            {
+                                Toast.makeText(getApplicationContext(), "Failed to launch map\nLocation services might be off",Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getApplicationContext(), AllGiftCardsActivity.class);
+                                intent.putExtra("mail", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("mail",""));
+                                startActivity(intent);
+                                finish();
+                            }
+                            else
+                            {
+                                moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My Location");
+                            }
                         }
                         else{
                             Log.d(TAG, "onComplete: current location is null");
@@ -336,7 +347,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d("*******", "google map" + googleMap);
-        Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onMapReady: map is ready");
         mMap = googleMap;
 

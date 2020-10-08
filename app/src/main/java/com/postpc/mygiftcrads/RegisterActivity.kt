@@ -8,8 +8,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
+import java.util.concurrent.TimeUnit
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -49,9 +52,11 @@ class RegisterActivity : AppCompatActivity() {
                         editor.putString("mail", mail)
                         editor.putString("password", password)
                         editor.putString("token", "")
+                        editor.putString("notifications", "yes")
                         editor.apply()
                         register_email.setText("")
                         register_password.setText("")
+                        setDailyWorker()
                         val intent = Intent(this, AllGiftCardsActivity::class.java)
                         intent.putExtra("mail", mail)
                         startActivity(intent)
@@ -85,6 +90,7 @@ class RegisterActivity : AppCompatActivity() {
                             editor.apply()
                             val intent = Intent(this, AllGiftCardsActivity::class.java)
                             intent.putExtra("mail", log_mail)
+                            setDailyWorker()
                             startActivity(intent)
                             finish()
                         } else {
@@ -111,6 +117,15 @@ class RegisterActivity : AppCompatActivity() {
             editor.putString("token", token)
             editor.apply()
         }
+    }
+
+    private fun setDailyWorker()
+    {
+        val checkForNotify = PeriodicWorkRequestBuilder<NotificationWorker>(24, TimeUnit.HOURS)
+            .addTag("dateWorker").build()
+        val workManager = WorkManager.getInstance(this)
+        workManager.enqueue(checkForNotify)
+
     }
 
 }

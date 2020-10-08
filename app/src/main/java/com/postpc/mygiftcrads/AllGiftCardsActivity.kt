@@ -28,6 +28,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.getField
 import com.google.gson.Gson
+import java.lang.Exception
 import java.util.*
 import java.util.function.LongFunction
 import javax.sql.StatementEvent
@@ -113,7 +114,7 @@ class AllGiftCardsActivity : AppCompatActivity() {
         searchField.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
-                    search_fo_cards(query)
+                    search_for_cards(query)
                 }
                 return false
             }
@@ -216,6 +217,12 @@ class AllGiftCardsActivity : AppCompatActivity() {
                 val hashMap = hashMapOf<String, Any>(all_gift_cards[position].idString to FieldValue.delete())
                 Log.d(TAG, "to delete is ${Gson().toJson(all_gift_cards[position])}")
                 doc.update(hashMap)
+                val token = PreferenceManager.getDefaultSharedPreferences(applicationContext).getString("token", "")
+                val notiDoc = db.collection("notifications").document(token)
+                Log.d("****", "isdtring ${all_gift_cards[position].idString}")
+                val curHashMap = hashMapOf<String, Any>(all_gift_cards[position].idString to FieldValue.delete())
+                Log.d(TAG, "to delete is ${all_gift_cards[position].idString}")
+                notiDoc.update(curHashMap)
                 all_gift_cards.removeAt(position)
                 adapter.notifyDataSetChanged()
             }
@@ -252,18 +259,25 @@ class AllGiftCardsActivity : AppCompatActivity() {
                                 , amount)
                             db.collection("users").document(mail).update("card$amount", Gson().toJson(new_card))
                         }
-                        val new_notification = Gson().fromJson(data.
-                            getStringExtra("new_notification"), Notification::class.java)
-                        val notDoc = db.collection("notifications").document(new_notification.serial)
-                        notDoc.get().addOnSuccessListener {
-                            if(it != null)
-                            {
-                                val hashMap: HashMap<String, Any> = HashMap<String, Any>()
-                                hashMap["date"] = new_notification.date
-                                db.collection("notifications").
-                                    document(new_notification.serial).set(hashMap)
-                            }
-                        }
+//                        val token = PreferenceManager.getDefaultSharedPreferences(this).getString("token", "")
+//                        val jsonNotification = Gson().fromJson(data.getStringExtra("new_notification"), Notification::class.java)
+//                        val notDoc = db.collection("notifications").document(token)
+//                        notDoc.get().addOnSuccessListener {
+//                            if(it != null)
+//                            {
+//                                if(!it.exists())
+//                                {
+//                                    val hashMap: HashMap<String, Any> = HashMap<String, Any>()
+//                                    hashMap[new_card.idString] = data.getStringExtra("new_notification")
+//                                    db.collection("notifications").
+//                                        document(token).set(hashMap)
+//                                }
+//                                else
+//                                {
+//                                    notDoc.update(new_card.idString, data.getStringExtra("new_notification"))
+//                                }
+//                            }
+//                        }
                     }
                 }
             }
@@ -290,11 +304,15 @@ class AllGiftCardsActivity : AppCompatActivity() {
                 }
                 adapter.notifyDataSetChanged()
                 progress.visibility = View.INVISIBLE
+                val stores = allStores()
+                val sums = sumStores(stores)
+                val sp = PreferenceManager.getDefaultSharedPreferences(this)
+                sp.edit().putString("stores", stores).putString("sums", sums).apply()
             }
         }
     }
 
-    fun search_fo_cards(brand: String)
+    fun search_for_cards(brand: String)
     {
         Log.d("*****", "brand is $brand")
         val curCards = ArrayList<GiftCard>()

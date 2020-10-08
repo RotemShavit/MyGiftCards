@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#3F7397"
     tools:context=".SettingsActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="casual"
         android:text="SETTINGS"
         android:textAlignment="center"
-        android:textColor="#3F51B5"
+        android:textColor="#EEEEEE"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,6 @@
         android:layout_width="180sp"
         android:layout_height="50sp"
         android:text="  Sign Out"
-        android:fontFamily="casual"
         android:textSize="25sp"
         android:background="@drawable/rounded_rect"
         android:gravity="center_vertical"
@@ -60,7 +59,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1"
         app:itemTextColor="@color/bottom_nav_color"
-        app:itemIconTint="@color/bottom_nav_color"
+        app:itemIconTint="#EEEEEE"
         app:menu="@menu/bottom_menu"/>
 
     <TextView
@@ -92,7 +91,7 @@
         android:layout_height="wrap_content"
         android:text="Notifications"
         android:textSize="20sp"
-        android:fontFamily="casual"
+        android:textColor="#EEEEEE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -105,7 +104,6 @@
         android:layout_width="240sp"
         android:layout_height="50sp"
         android:text="  Change password"
-        android:fontFamily="casual"
         android:textSize="25sp"
         android:background="@drawable/rounded_rect"
         android:gravity="center_vertical"
@@ -120,7 +118,6 @@
         android:layout_width="240sp"
         android:layout_height="50sp"
         android:text="  Delete user"
-        android:fontFamily="casual"
         android:textSize="25sp"
         android:background="@drawable/rounded_rect"
         android:gravity="center"

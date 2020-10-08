@@ -24,6 +24,15 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
 }
 
 configurations {
@@ -52,7 +61,7 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:2.0.3'
     implementation 'com.google.firebase:firebase-core:17.5.0'
     implementation 'com.google.firebase:firebase-messaging:20.3.0'
-
+    implementation "androidx.work:work-runtime-ktx:2.4.0"
 
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
