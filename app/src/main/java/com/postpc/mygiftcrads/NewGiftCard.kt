@@ -27,13 +27,14 @@ class NewGiftCard : AppCompatActivity() {
     lateinit var phone : EditText
     lateinit var address : EditText
     lateinit var scanBtn : ImageView
+    val brandSpinnerData = ArrayList<SpinnerData>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_gift_card)
 
-        brandsSpinner = findViewById(R.id.brandSpinner)
+        brandsSpinner = findViewById<Spinner>(R.id.brandSpinner)
         categorySpinner =  findViewById(R.id.categorySpinner)
         dateEditText = findViewById(R.id.newExpDate)
         DoneBtn = findViewById(R.id.done_btn)
@@ -43,7 +44,7 @@ class NewGiftCard : AppCompatActivity() {
         address = findViewById(R.id.newAddress)
         scanBtn = findViewById(R.id.scanBtn)
 
-        val brandSpinnerData = ArrayList<SpinnerData>()
+
         brandSpinnerData.add(SpinnerData("FOX", R.drawable.fox.toString()))
         brandSpinnerData.add(SpinnerData("ACE", R.drawable.ace.toString()))
         brandSpinnerData.add(SpinnerData("TOYSRUS", R.drawable.toys_r_us.toString()))
@@ -58,6 +59,8 @@ class NewGiftCard : AppCompatActivity() {
 
         val brandSpinnerAdapter : BrandSpinnerAdapter = BrandSpinnerAdapter(this, brandSpinnerData)
         brandsSpinner.adapter = brandSpinnerAdapter
+
+        brandsSpinner.setSelection(1)
 
         val categorySpinnerAdapter : CategorySpinnerAdapter = CategorySpinnerAdapter(this, categorySpinnerData)
         categorySpinner.adapter = categorySpinnerAdapter
@@ -148,7 +151,57 @@ class NewGiftCard : AppCompatActivity() {
 
         scanBtn.setOnClickListener {
             val intent = Intent(this, ScanCard::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 1)
+            Log.d("***", "started scan activity")
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 1)
+        {
+            if(data!=null)
+            {
+                val brand = data.getStringExtra("brand")
+                val date = data.getStringExtra("date")
+                val serial = data.getStringExtra("number")
+                val value = data.getStringExtra("value")
+                Log.d("****", "brand date and serial = $brand $date $serial")
+                var i = 0
+                for(b_data in brandSpinnerData)
+                {
+                    if(b_data.name.toLowerCase() == brand.toLowerCase())
+                    {
+                        brandsSpinner.setSelection(i)
+                    }
+                    i += 1
+                }
+                val newDate : String
+                if(date != "")
+                {
+                    val splitedDate = date.split("/")
+                    var day = splitedDate[0]
+                    var month = splitedDate[1]
+                    var year = splitedDate[2]
+                    if(day.length == 1)
+                    {
+                        day = "0$day"
+                    }
+                    if(month.length == 1)
+                    {
+                        month= "0$month"
+                    }
+                    newDate = "$day/$month/$year"
+                }
+                else
+                {
+                    newDate = date
+                }
+                dateEditText.setText(newDate)
+                serial_num.setText(serial)
+                sum_text.setText(value)
+            }
         }
     }
 }

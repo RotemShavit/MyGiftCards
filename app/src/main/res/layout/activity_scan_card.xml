@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#4782AA"
     android:padding="15dp">
 
 
@@ -18,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
-        android:layout_marginTop="330dp"
+        android:layout_marginTop="250dp"
         android:orientation="horizontal"
         android:gravity="center"
         >
@@ -38,14 +40,22 @@
             android:text="Take details"
 
             />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="doneDetails"
+            android:text="Done"
+
+            />
     </LinearLayout>
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="381dp"
-        android:layout_height="220dp"
+        android:layout_height="160dp"
         android:layout_below="@+id/actionContainer"
-        android:layout_marginTop="-365dp"
+        android:layout_marginTop="-280dp"
         android:background="@android:color/transparent"
         android:gravity="top"
         android:hint="Card's text will appear here"
@@ -68,5 +78,6 @@
             android:layout_height="wrap_content"
             android:text="take a photo of your card"/>
     </LinearLayout>
+
 
 </RelativeLayout>

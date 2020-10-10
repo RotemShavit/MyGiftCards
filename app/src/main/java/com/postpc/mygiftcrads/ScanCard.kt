@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -14,13 +15,15 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.postpc.mygiftcrads.R
 
-val optional_brands = listOf("giftcard","Fox", "fox", "GOLF", "GOLF&CO", "GOLF&KIDS", "FOXhome", "FOX home","AMERICAN EGAL", "Foot Locker", "MANGO", "LALINE", "QUICKSILVER", "BILLABONG", "ANTHROPOLOGIE", "THE CHILDREN'S PLACE", "Ivory", "vory", "Visa", "MASTER CARD")
+//val optional_brands = listOf("giftcard","Fox", "fox", "GOLF", "GOLF&CO", "GOLF&KIDS", "FOXhome", "FOX home","AMERICAN EGAL", "Foot Locker", "MANGO", "LALINE", "QUICKSILVER", "BILLABONG", "ANTHROPOLOGIE", "THE CHILDREN'S PLACE", "Ivory", "vory", "Visa", "MASTER CARD")
+val optional_brands = listOf("Fox", "fox", "FOX", "toys", "Toys", "TOYS")
 
 
 class ScanCard : AppCompatActivity() {
 
     lateinit var imageView: ImageView
     lateinit var editText: EditText
+    lateinit var backIntent: Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_card)
@@ -35,6 +38,13 @@ class ScanCard : AppCompatActivity() {
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent, "Select card"), 1)
+    }
+
+    fun doneDetails(v: View)
+    {
+        setResult(1, backIntent)
+        Log.d("--------", "result has set")
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -110,16 +120,49 @@ class ScanCard : AppCompatActivity() {
             //editText.append("Text is " + blockText + "\n")
             //editText.append("Value is " + card_value_regex + "\n")
         }
+        backIntent = Intent(this, NewGiftCard::class.java)
         if(brands.isNotEmpty())  // if we got some brands
+        {
             editText.append("cards brand is: " + brands + "\n")
-
+            backIntent.putExtra("brand", brands[0])
+            Log.d("--------", "brand is ${brands[0]}")
+        }
+        else
+        {
+            backIntent.putExtra("brand", "")
+            Log.d("--------", "brand is empty")
+        }
         if(card_date.isNotEmpty())  // if we got a date
+        {
             editText.append("cards date is: " + card_date + "\n")
+            backIntent.putExtra("date", card_date[0])
+            Log.d("--------", "date is ${card_date[0]}")
+        }
+        else
+        {
+            backIntent.putExtra("date", "")
+            Log.d("--------", "date is empty")
+        }
 
         if(card_number.isNotEmpty())  // if we got a date
+        {
             editText.append("cards number is: " + card_number + "\n")
-
+            backIntent.putExtra("number", card_number[0])
+            Log.d("--------", "number is ${card_number[0]}")
+        }
+        else
+        {
+            backIntent.putExtra("number", "")
+            Log.d("--------", "number is empty")
+        }
         if(card_value.isNotEmpty())  // if we got a date
+        {
             editText.append("cards value is: " + card_value + "\n")
+            backIntent.putExtra("value", card_value[0])
+        }
+        else
+        {
+            backIntent.putExtra("value", "")
+        }
     }
 }

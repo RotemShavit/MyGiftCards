@@ -57,9 +57,12 @@ class RegisterActivity : AppCompatActivity() {
                         register_email.setText("")
                         register_password.setText("")
                         setDailyWorker()
+                        Log.d("***", "daily worker set")
                         val intent = Intent(this, AllGiftCardsActivity::class.java)
                         intent.putExtra("mail", mail)
+                        Log.d("***", "activity starting")
                         startActivity(intent)
+                        Log.d("***", "started activity")
                         finish()
                         // Next activity
                     }

@@ -2,6 +2,7 @@ package com.postpc.mygiftcrads
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.widget.Switch
 import android.widget.TextView

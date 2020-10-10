@@ -3,6 +3,7 @@ package com.postpc.mygiftcrads;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Operation;
@@ -37,6 +38,7 @@ public class NotificationWorker extends Worker {
             String user = sp.getString("mail", "");
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             String curToken = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("token", "");
+            assert user != null;
             DocumentReference doc = db.collection("users").document(user);
             doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -47,9 +49,10 @@ public class NotificationWorker extends Worker {
                         assert data != null;
                         for(String key: data.keySet())
                         {
-                            if(key != "amount" && key != "password" && key != "token")
+                            if(!key.equals("amount") && !key.equals("password") && !key.equals("token"))
                             {
-                                GiftCard curCrad = new Gson().fromJson(data.get(key).toString(), GiftCard.class);
+                                Gson gson = new Gson();
+                                GiftCard curCrad = gson.fromJson((String) data.get(key), GiftCard.class);
                                 Date curDate = Calendar.getInstance().getTime();
                                 SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                                 if(curCrad.getExpDate().equals(df.format(curDate)))

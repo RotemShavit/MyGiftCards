@@ -1,38 +1,25 @@
 package com.postpc.mygiftcrads
 
 import DeleteDialog
-import ReminderBroadcast
 import android.app.Activity
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.opengl.Visibility
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.app.ActivityCompat
-import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationMenu
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import androidx.work.ListenableWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.common.primitives.UnsignedBytes.toInt
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.getField
 import com.google.gson.Gson
-import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
-import java.util.function.LongFunction
-import javax.sql.StatementEvent
-import kotlin.collections.HashMap
 
 class AllGiftCardsActivity : AppCompatActivity() {
 
@@ -85,7 +72,6 @@ class AllGiftCardsActivity : AppCompatActivity() {
 
         addButtonScreen.setOnClickListener{
 //            NotificationClass(this).fireDateNotification("Your Card is about to be expired")
-            delayNotify(10)
             Log.d(TAG, "new gift card")
             val myIntent = Intent(this, NewGiftCard::class.java)
             startActivityForResult(myIntent, 1)
@@ -148,19 +134,12 @@ class AllGiftCardsActivity : AppCompatActivity() {
 
         mail = intent.getStringExtra("mail")
 
+        Log.d("***", "Loading cards")
+
         loadCards(mail)
 
-    }
+        Log.d("***", "Cards loaded")
 
-
-    private fun delayNotify(delay: Long)
-    {
-        val intent: Intent = Intent(this, ReminderBroadcast::class.java)
-        val pending: PendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-        val alarmManager: AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val currentTimeInMilli : Long = System.currentTimeMillis()
-        val tenSecondsInMilli: Long = 10*1000
-        alarmManager.set(AlarmManager.RTC_WAKEUP, currentTimeInMilli + tenSecondsInMilli, pending)
     }
 
 

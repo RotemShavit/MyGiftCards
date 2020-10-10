@@ -13,7 +13,6 @@
         style="@style/Widget.AppCompat.TextView"
         android:layout_width="match_parent"
         android:layout_height="70sp"
-        android:fontFamily="casual"
         android:text="New Gift Card"
         android:textAlignment="center"
         android:textColor="#EEEEEE"
@@ -218,6 +217,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1"
         app:itemTextColor="@color/bottom_nav_color"
-        app:itemIconTint="@color/bottom_nav_color"
+        app:itemIconTint="#EEEEEE"
         app:menu="@menu/bottom_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
